@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Todo } from './todo';
 import { TodoDataService } from './todo-data.service';
 
@@ -8,10 +8,16 @@ import { TodoDataService } from './todo-data.service';
   styleUrls: ['./app.component.css'],
   providers: [TodoDataService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   newTodo: Todo = new Todo();
 
   constructor(private todoDataService: TodoDataService) {
+  }
+
+  ngOnInit() {
+    //this.todoDataService.getAllTodos();
+    //this.todos();
+    this.loadData();
   }
 
   addTodo() {
@@ -29,5 +35,14 @@ export class AppComponent {
 
   get todos() {
     return this.todoDataService.getAllTodos();
+  }
+
+  loadData() {
+    this.todoDataService.getTodosFromJSON()
+                        .subscribe(
+                            function(response) { console.log('Success Response', response)},
+                            function(error) { console.log('Error happened' + error)},
+                            function() { console.log('the subscription is completed')}
+                        );
   }
 }
