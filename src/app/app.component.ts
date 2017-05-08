@@ -9,40 +9,33 @@ import { TodoDataService } from './todo-data.service';
   providers: [TodoDataService]
 })
 export class AppComponent implements OnInit {
-  newTodo: Todo = new Todo();
+  newTodo: Todo = new Todo(null);
+  public todos: Todo[] = [];
 
-  constructor(private todoDataService: TodoDataService) {
+  constructor(private _todoDataService: TodoDataService) {
+    // this._todoDataService.loadTodosFromJSON();
   }
 
   ngOnInit() {
-    //this.todoDataService.getAllTodos();
-    //this.todos();
-    this.loadData();
+    this._todoDataService.getAllTodos().subscribe(
+      result => this.todos = result
+    );
   }
 
   addTodo() {
-    this.todoDataService.addTodo(this.newTodo);
-    this.newTodo = new Todo();
+    this._todoDataService.addTodo(this.newTodo);
+    this.newTodo = new Todo(null);
   }
 
   toggleTodoComplete(todo) {
-    this.todoDataService.toggleTodoComplete(todo);
+    this._todoDataService.toggleTodoComplete(todo);
   }
 
   removeTodo(todo) {
-    this.todoDataService.deleteTodoById(todo.id);
+    this._todoDataService.deleteTodoById(todo.id);
   }
 
-  get todos() {
-    return this.todoDataService.getAllTodos();
-  }
-
-  loadData() {
-    this.todoDataService.getTodosFromJSON()
-                        .subscribe(
-                            function(response) { console.log('Success Response', response)},
-                            function(error) { console.log('Error happened' + error)},
-                            function() { console.log('the subscription is completed')}
-                        );
+  getAllTodos() {
+    return this._todoDataService.getAllTodos();
   }
 }
