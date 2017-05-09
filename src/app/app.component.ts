@@ -13,7 +13,6 @@ export class AppComponent implements OnInit {
   public todos: Todo[] = [];
 
   constructor(private _todoDataService: TodoDataService) {
-    // this._todoDataService.loadTodosFromJSON();
   }
 
   ngOnInit() {
@@ -28,14 +27,14 @@ export class AppComponent implements OnInit {
   }
 
   toggleTodoComplete(todo) {
-    this._todoDataService.toggleTodoComplete(todo);
+    // this._todoDataService.toggleTodoComplete(todo);
   }
 
   removeTodo(todo) {
-    this._todoDataService.deleteTodoById(todo.id);
+    // this._todoDataService.deleteTodoById(todo.id);
   }
 
   getAllTodos() {
-    return this._todoDataService.getAllTodos();
+    // return this._todoDataService.getAllTodos();
   }
 }

@@ -8,35 +8,31 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class TodoDataService {
-
   private TODO_URL = 'assets/api/todos.json';
   private lastId = 0;
-  private todos: Todo[] = [];
-
 
   constructor(public _http: Http) {
   }
 
-  addTodo(todo: Todo): TodoDataService {
-    if (!todo.id) {
-      todo.id = ++this.lastId;
-    }
-    this.todos.push(todo);
-    return this;
-  }
-
-  deleteTodoById(id: number): TodoDataService {
-    this.todos = this.todos.filter(todo => todo.id !== id);
-    return this;
-  }
-
-  updateTodoById(id: number, values: Object = {}): Todo {
-    const todo = this.getTodoById(id);
+  addTodo(todo: Todo): any {
     if (!todo) {
-      return null;
+      return false;
     }
-    Object.assign(todo, values);
     return todo;
+  }
+
+  deleteTodoById(id: number) {
+    // this.todos = this.todos.filter(todo => todo.id !== id);
+    return true;
+  }
+
+  updateTodoById(id: number, values: Object = {}) {
+    // const todo = this.getTodoById(id);
+    // if (!todo) {
+    //   return null;
+    // }
+    // Object.assign(todo, values);
+    // return todo;
   }
 
   getAllTodos() {
@@ -45,8 +41,8 @@ export class TodoDataService {
                 .map(result => result.json().todos.map(i => new Todo(i)));
   }
 
-  getTodoById(id: number): Todo {
-    return this.todos.filter(todo => todo.id === id).pop();
+  getTodoById(id: number) {
+    // return this.todos.filter(todo => todo.id === id).pop();
   }
 
   toggleTodoComplete(todo: Todo) {
