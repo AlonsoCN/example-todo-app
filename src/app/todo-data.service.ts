@@ -9,7 +9,6 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class TodoDataService {
   private TODO_URL = 'http://localhost:8080/api/todos';
-  private lastId = 0;
 
   // Do I have to declare headars and options here ???
   headers = new Headers({ 'Content-Type': 'application/json' });
@@ -32,12 +31,11 @@ export class TodoDataService {
       .map(result => new Todo(result.json()));
   }
 
-  updateById(id: Number, newData: Object = {}): Observable<{ status: Boolean }> {
+  updateById(id: number, newData: any = {}): Observable<{ status: boolean }> {
     return this._http.put(this.TODO_URL + `/${id}`, newData, this.options)
       .map(result => result.json());
   }
 
-  // delete(id: Number) { ???
   delete(todo: Todo): Observable<any> {
     return this._http.delete(this.TODO_URL + `/${todo.id}`, this.options)
       .map(result => result.json());

@@ -21,23 +21,21 @@ export class AppComponent implements OnInit {
 
   getAllTodos() {
     this._todoDataService.getAll()
-        .subscribe(result => this.todos = result);
+      .subscribe(result => this.todos = result);
   }
 
   addTodo() {
     // We don't want to add blank todos without titles
-    if (this.newTodo.title) {
-      this._todoDataService.add(this.newTodo)
-        .subscribe(result => {
-          this.todos.push(result);
-        });
-    }
+    if (!this.newTodo.title) return;
+
+    this._todoDataService.add(this.newTodo)
+      .subscribe(result => this.todos.push(result));
+
     this.newTodo = new Todo(null);
   }
 
   toggleTodoComplete(todo: Todo) {
-    this._todoDataService
-      .toggleTodoComplete(todo)
+    this._todoDataService.toggleTodoComplete(todo)
       .subscribe(result => {
         if (result.status) {
           this.updateTodoById(todo.id, {
@@ -58,12 +56,10 @@ export class AppComponent implements OnInit {
       });
   }
 
-  // use private for dev purpose?
-  private updateTodoById(id: number, values: Object = {}) {
+  private updateTodoById(id: number, values: any = {}) {
     const todo = this.getTodoById(id);
-    if (!todo) {
-      return null;
-    }
+    if (!todo) return null;
+
     Object.assign(todo, values);
     return todo;
   }
