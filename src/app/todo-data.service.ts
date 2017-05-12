@@ -43,12 +43,13 @@ export class TodoDataService {
     return true;
   }
 
-  toggleTodoComplete(todo: Todo): Boolean {
+  toggleTodoComplete(todo: Todo): Observable<any> {
     const updateTodo = this.updateById(todo.id, {
       complete: !todo.complete
     });
-    let response;
-    updateTodo.subscribe(result => response = result.status);
-    return response;
+    // let response;
+    // updateTodo.subscribe(result => response = result.status);
+    // return response;
+    return updateTodo;
   }
 }

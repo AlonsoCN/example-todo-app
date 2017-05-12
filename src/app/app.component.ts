@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
         .subscribe(result => this.todos = result);
   }
 
-  addTodo() {
+  addTodo(): void {
     // We don't want to add blank todos without titles
     if (this.newTodo.title) {
       this._todoDataService.add(this.newTodo)
@@ -36,25 +36,22 @@ export class AppComponent implements OnInit {
   }
 
   toggleTodoComplete(todo: Todo) {
-    const isUpdated = this._todoDataService.toggleTodoComplete(todo);
-    setTimeout((isUpdated) => {
-      console.log('updated', isUpdated);
-    }, 3000);
+    let isUpdated = null;
+    this._todoDataService
+      .toggleTodoComplete(todo)
+      .subscribe(result => isUpdated = result.status);
 
-    if (isUpdated) {
-      const todoUpdated = this.updateTodoById(todo.id, {
-        complete: !todo.complete
-      });
-      console.log(todoUpdated);
-      return todoUpdated;
-    }
+    const todoUpdated = this.updateTodoById(todo.id, {
+      complete: !todo.complete
+    });
+    return todoUpdated;
   }
 
   removeTodo(todo: Todo) {
     // this._todoDataService.deleteTodoById(todo.id);
   }
 
-  updateTodoById(id: number, values: Object = {}) {
+  private updateTodoById(id: number, values: Object = {}) {
     const todo = this.getTodoById(id);
     if (!todo) {
       return null;
