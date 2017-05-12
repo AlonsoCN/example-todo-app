@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
         .subscribe(result => this.todos = result);
   }
 
-  addTodo(): void {
+  addTodo() {
     // We don't want to add blank todos without titles
     if (this.newTodo.title) {
       this._todoDataService.add(this.newTodo)
@@ -36,21 +36,28 @@ export class AppComponent implements OnInit {
   }
 
   toggleTodoComplete(todo: Todo) {
-    let isUpdated = null;
     this._todoDataService
       .toggleTodoComplete(todo)
-      .subscribe(result => isUpdated = result.status);
-
-    const todoUpdated = this.updateTodoById(todo.id, {
-      complete: !todo.complete
-    });
-    return todoUpdated;
+      .subscribe(result => {
+        if (result.status) {
+          this.updateTodoById(todo.id, {
+            complete: !todo.complete
+          });
+        }
+      });
   }
 
   removeTodo(todo: Todo) {
-    // this._todoDataService.deleteTodoById(todo.id);
+    this._todoDataService
+      .delete(todo)
+      .subscribe(result => {
+        if (result.status) {
+          this.todos = this.todos.filter(t => t.id !== todo.id);
+        }
+      });
   }
 
+  // use private for dev purpose?
   private updateTodoById(id: number, values: Object = {}) {
     const todo = this.getTodoById(id);
     if (!todo) {

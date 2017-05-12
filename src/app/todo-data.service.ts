@@ -31,25 +31,22 @@ export class TodoDataService {
       .map(result => new Todo(result.json()));
   }
 
-  private updateById(id: Number, values: Object = {}): Observable<{ status: Boolean }> {
-    values['id'] = id;
-    return this._http.put(this.TODO_URL, values, this.options)
+  updateById(id: Number, newData: Object = {}): Observable<{ status: Boolean }> {
+    newData['id'] = id;
+    return this._http.put(this.TODO_URL, newData, this.options)
       .map(result => result.json());
   }
 
-  delete(todo: Todo) {
-    const todoId = todo.id;
-    // this.todos = this.todos.filter(todo => todo.id !== id);
-    return true;
+  // delete(id: Number) { ???
+  delete(todo: Todo): Observable<any> {
+    return this._http.delete(this.TODO_URL + `/${todo.id}`, this.options)
+      .map(result => result.json());
   }
 
   toggleTodoComplete(todo: Todo): Observable<any> {
     const updateTodo = this.updateById(todo.id, {
       complete: !todo.complete
     });
-    // let response;
-    // updateTodo.subscribe(result => response = result.status);
-    // return response;
     return updateTodo;
   }
 }
