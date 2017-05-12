@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
       });
   }
 
+  // Do I have to define void type on functions ???
   removeTodo(todo: Todo) {
     this._todoDataService
       .delete(todo)

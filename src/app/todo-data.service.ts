@@ -11,6 +11,7 @@ export class TodoDataService {
   private TODO_URL = 'http://localhost:8080/api/todos';
   private lastId = 0;
 
+  // Do I have to declare headars and options here ???
   headers = new Headers({ 'Content-Type': 'application/json' });
   options = new RequestOptions({ headers: this.headers });
 
@@ -32,8 +33,7 @@ export class TodoDataService {
   }
 
   updateById(id: Number, newData: Object = {}): Observable<{ status: Boolean }> {
-    newData['id'] = id;
-    return this._http.put(this.TODO_URL, newData, this.options)
+    return this._http.put(this.TODO_URL + `/${id}`, newData, this.options)
       .map(result => result.json());
   }
 
